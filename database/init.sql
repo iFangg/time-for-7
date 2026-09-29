@@ -1,31 +1,27 @@
-DROP DATABASE 7scheduling IF EXISTS
+-- can use sqlite3 database/init.db < database/init.sql
 
-CREATE DATABASE 7scheduling
-
-USE 7scheduling
-
-CREATE TABLE [IF NOT EXISTS] Users (
+CREATE TABLE IF NOT EXISTS Users (
     id INTEGER PRIMARY KEY,
-    Name TEXT NOT NULL -- limit to 250 characters
-)
+    Name TEXT NOT NULL                          -- limit to 250 characters
+);
 
-CREATE TABLE [IF NOT EXISTS] Events (
+CREATE TABLE IF NOT EXISTS Events (
     id INTEGER PRIMARY KEY,
     Title TEXT NOT NULL,                            -- limit to 100 characters
     Duration REAL NOT NULL,
     Date NUMERIC NOT NULL,
     isRecurring NUMERIC NOT NULL DEFAULT 0,         -- boolean
     hasDetailsHidden NUMERIC NOT NULL DEFAULT 1     -- boolean
-)
+);
 
-CREATE TABLE [IF NOT EXISTS] EventAttendees (
+CREATE TABLE IF NOT EXISTS EventAttendees (
     eventId INTEGER,
     userId INTEGER,
     FOREIGN KEY(eventId) REFERENCES Events(id),
-    FOREIGN KEY(userId) REFERENCES Users(id),
-)
+    FOREIGN KEY(userId) REFERENCES Users(id)
+);
 
-CREATE TABLE [IF NOT EXISTS] EventRecurrance (
+CREATE TABLE IF NOT EXISTS EventRecurrance (
     eventID INTEGER,
     startDate NUMERIC NOT NULL,
     endDate NUMERIC NULL,
@@ -35,5 +31,5 @@ CREATE TABLE [IF NOT EXISTS] EventRecurrance (
     byMonth TEXT NULL,
     byDay TEXT NULL,
     byYearDay TEXT NULL,
-    FOREIGN KEY(eventId) REFERENCES Events(id),
-)
+    FOREIGN KEY(eventId) REFERENCES Events(id)
+);

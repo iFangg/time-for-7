@@ -5,6 +5,7 @@ from discord.ext import commands
 from bot_logging import bot_logger
 import os
 from dotenv import load_dotenv
+from database import db_conn
 
 
 #### LOGGING ####
@@ -35,6 +36,7 @@ async def test(ctx):
 
 ### RUNNING BOT ###
 load_dotenv()
+db_conn.db_connect(logger)
 
 bot_token = os.getenv('BOT_TOKEN')
 client.run(bot_token, log_handler=None)
