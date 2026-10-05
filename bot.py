@@ -1,42 +1,29 @@
-# This example requires the 'message_content' intent.
-
-import discord
-from discord.ext import commands
-from bot_logging import bot_logger
 import os
-from dotenv import load_dotenv
 from database import db_conn
+from dotenv import load_dotenv
+from bot_logging import bot_logger
+from bot_client.client import init
 
 
 #### LOGGING ####
 logger = bot_logger.init()
 
-### CLIENT ###
-class MyClient(commands.Bot):
-    async def on_ready(self):
-        print(f'Logged on as {self.user}!')
 
-    async def on_message(self, message):
-        print(f'Message from {message.author}: {message.content}')
-        await self.process_commands(message)
+### BOT CLIENT INITIALISATION ###
+client = init()
 
 
-intents = discord.Intents.default()
-intents.message_content = True
-
-client = MyClient(command_prefix='!', intents=intents)
-
-### COMMANDS ###
-@client.command()
-async def test(ctx):
-    bot_logger.info("Test called")
-    await ctx.send("Test called")
-
-# client.add_command(testCommand)
-
-### RUNNING BOT ###
-load_dotenv()
+### STARTING BOT ###
 db_conn.db_connect(logger)
 
-bot_token = os.getenv('BOT_TOKEN')
-client.run(bot_token, log_handler=None)
+
+try:
+    load_dotenv()
+    bot_token = os.getenv('BOT_TOKEN')
+    client.run(bot_token, log_handler=None)
+    
+except (ConnectionError, Exception) as e:
+    if type(e) == ConnectionError:
+        logger.error(f"Could not connect: {e}")
+    else:
+        logger.error(f"Unknown error: {e}")

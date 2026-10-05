@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS EventAttendees (
 );
 
 CREATE TABLE IF NOT EXISTS EventRecurrance (
-    eventID INTEGER,
+    eventId INTEGER,
     startDate NUMERIC NOT NULL,
     endDate NUMERIC NULL,
     recurranceRule TEXT NULL,
