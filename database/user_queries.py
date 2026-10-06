@@ -15,9 +15,10 @@ def getUsers():
         res = cur.execute(query)
 
         users = res.fetchall()
-        print(f"Users: {res}")
+        print(f"Users: {users}")
         logger.info("Users table queried")
 
+        # TODO: format before returning
         return users
     except (Exception) as e:
         logger.error(f"Error getting users: {e}")
@@ -28,20 +29,24 @@ def getUsers():
 def registerUser(user: user.User):
     user.print()
     cur = db_connect()
-    search_query =  """
-                        SELECT * 
-                        FROM Users
-                        WHERE id = ?
-                            AND Name = ?
-                        LIMIT 1
-                    """
+    search_query = (
+        """
+            SELECT * 
+            FROM Users
+            WHERE id = ?
+                AND Name = ?
+            LIMIT 1
+        """
+    )
     
-    insert_query =  """
-                        INSERT INTO Users 
-                        (id, Name)
-                        VALUES
-                        ?, ?
-                    """
+    insert_query = (
+        """
+            INSERT INTO Users 
+            (id, Name)
+            VALUES
+            ?, ?
+        """
+    )
     
     try:
         res = cur.execute(search_query, (user._id, user.name))
