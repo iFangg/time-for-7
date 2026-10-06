@@ -1,8 +1,8 @@
 -- can use sqlite3 database/init.db < database/init.sql
 
 CREATE TABLE IF NOT EXISTS Users (
-    id INTEGER PRIMARY KEY,
-    Name TEXT NOT NULL                          -- limit to 250 characters
+    id TEXT NOT NULL PRIMARY KEY,
+    Name TEXT NOT NULL                              -- limit to 250 characters
 );
 
 CREATE TABLE IF NOT EXISTS Events (
@@ -11,7 +11,8 @@ CREATE TABLE IF NOT EXISTS Events (
     Duration REAL NOT NULL,
     Date NUMERIC NOT NULL,
     isRecurring NUMERIC NOT NULL DEFAULT 0,         -- boolean
-    hasDetailsHidden NUMERIC NOT NULL DEFAULT 1     -- boolean
+    hasDetailsHidden NUMERIC NOT NULL DEFAULT 1,    -- boolean
+    ServerId TEXT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS EventAttendees (

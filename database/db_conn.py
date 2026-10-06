@@ -1,7 +1,6 @@
 import cs50
 import sqlite3
 import logging
-from bot_logging import bot_logger
 from pathlib import Path
 import os
 
@@ -9,12 +8,11 @@ DATABASE_ROOT = Path(__file__).parent
 DATABASE_INIT_SQL = DATABASE_ROOT / "init.sql"
 DATABASE_FILE = DATABASE_ROOT / "init.db"
 
-def db_connect(logger: logging = None):
-    if not logger:
-        logger = bot_logger.init()
+logger = logging.getLogger('discord')
 
+def db_connect():
     try:
-        logger.info("Establishing db connection...")
+        # logger.info("Establishing db connection...")
         # test = cs50.SQL("sqlite:///./database/init.db")
         
         conn = sqlite3.connect("./database/init.db")
@@ -26,11 +24,11 @@ def db_connect(logger: logging = None):
                 c.executescript(f.read())
             
         
-        res = c.execute("SELECT name FROM sqlite_schema WHERE type ='table' AND name NOT LIKE 'sqlite_%';")
+        # res = c.execute("SELECT name FROM sqlite_schema WHERE type ='table' AND name NOT LIKE 'sqlite_%';")
 
-        print("tables: ", res.fetchall())
+        # print("tables: ", res.fetchall())
 
         return c
-    except (sqlite3.OperationalError, sqlite3.DatabaseError, RuntimeError) as e:
+    except (sqlite3.OperationalError, sqlite3.DatabaseError, RuntimeError, Exception) as e:
         logger.error(f"Failed to connect to db: {e}")
         raise SystemError("Unable to connect to db, check logs")
