@@ -1,5 +1,9 @@
 .env
 
+bin
+lib
+pyvenv.cfg
+
 discord.log
 discord*.log
 

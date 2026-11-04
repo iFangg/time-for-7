@@ -1,9 +1,9 @@
 import discord
 import logging
-from classes.user import User
 from discord.ext import commands
-from database import user_queries
 from bot_logging import bot_logger
+from calendarUsers import CalendarUsers
+from calendarEvents import CalendarEvents
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -28,36 +28,22 @@ def init():
         logger.info("Test called")
         await ctx.send("Test called")
     
+    # add a how to/help section to this command to show people how to import calendars
     @client.command()
-    async def events(ctx):
-        logger.info("Get events called")
-        events = user_queries.getEvents()
-        
-        # TODO: Format events - maybe put in get events method?
-        # events = formatEvents(events)
-        await ctx.send("No events found!" if len(events) == 0 else events)
+    async def importCalendar():
+        pass
+
+    try:
+        client.add_cog(CalendarEvents(client))
+        logger.info("Loaded events cog")
+    except Exception as e:
+        logger.error("Unable to add events cog: ", e)
     
-    @client.command()
-    async def users(ctx):
-        logger.info("Get users called")
-        users = user_queries.getUsers()
-        
-        # TODO: Same formatting task as events
-        await ctx.send("No users found!" if len(users) == 0 else users)
-    
-    @client.command()
-    async def register(ctx):
-        author = ctx.author
-        # print(author)
-        user = User(author.name)
-        user.id = author.id
-        
-        logger.info(f"Register user called by: {user.name}")
-        try:
-            user_queries.registerUser(user)
-            await ctx.send(f"<@{author.id}>, you have been registered to this server's schedule!")
-        except (Exception) as e:
-            await ctx.send(f"Error registering, try again\nERROR: {e}")
+    try:
+        client.add_cog(CalendarUsers(client))
+        logger.info("Loaded users cog")
+    except Exception as e:
+        logger.error("Unable to add users cog: ", e)
 
     return client
 

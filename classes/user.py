@@ -1,5 +1,5 @@
 class User:
-    def __init__(self, name):
+    def __init__(self, name: str):
         self._id = ''
         self.name = name
 

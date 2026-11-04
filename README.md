@@ -11,6 +11,7 @@
 - [ical recurence structure](https://icalendar.org/iCalendar-RFC-5545/3-8-5-3-recurrence-rule.html)
 - [ical validator](https://icalendar.org/validator.html)
 - [sqlite types](https://www.sqlite.org/datatype3.html)
+- [gcal sync](https://github.com/allenporter/gcal_sync) for when we want to try update calendars after making a change on discord
 
 
 ## Requirements
@@ -57,3 +58,11 @@
 
 # Notes
 - assume working week start is monday
+
+# Commands
+- creating an event flow:
+    - check if event exists
+    - confirm with user if they would like to modify that event?
+        - end if no
+        - modify if yes
+    - create new event if not exists 
