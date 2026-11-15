@@ -1,14 +1,14 @@
-import sqlite3
+# import sqlite3
 import logging
-from database.db_conn import db_connect
 from classes.event import Event
+from database.db_conn import db_connect
 
 
 logger = logging.getLogger('discord')
 
 
 def getEvents():
-    cur = db_connect()
+    [_, cur] = db_connect()
     query = (
         """
             SELECT e.* 
@@ -33,7 +33,7 @@ def getEvents():
         cur.close()
 
 def checkEventExists(eventId: int):
-    cur = db_connect()
+    [_, cur] = db_connect()
     query = "SELECT id FROM EVENTS WHERE id = ?"
     
     try:
@@ -50,32 +50,35 @@ def checkEventExists(eventId: int):
 
 
 def upsertEvent(event: Event):
-    cur = db_connect()
+    [conn, cur] = db_connect()
     upsert_inputs = {
-        "id": event.id(),
+        "id": event.id,
         "title": event.title,
         "duration": event.duration,
         "date": event.date,
         "isRecurring": event.isRecurring,
-        "hasDetailsHidden": event.hasDetailsHidden
+        "hasDetailsHidden": event.hasDetailsHidden,
+        "ServerId": event.serverId
     }
 
     upsert_event_query = (
         """
-            INSERT INTO EVENTS(id, Title, Duration, Date, isRecurring, hasDetailsHidden)
-            VALUES (:id, :title, :duration, :date, :isRecurring, :hasDetailsHidden)
+            INSERT INTO EVENTS(id, Title, Duration, Date, isRecurring, hasDetailsHidden, serverId)
+            VALUES (:id, :title, :duration, :date, :isRecurring, :hasDetailsHidden, :serverId)
                 ON CONFLICT(id) 
                 DO UPDATE SET
                     Title = :title,
                     Duration = :duration,
                     Date = :date,
                     isRecurring = :isRecurring,
-                    hasDetailsHidden = :hasDetailsHidden
+                    hasDetailsHidden = :hasDetailsHidden,
+                    serverId = :serverId
         """
     )
 
     try:
         cur.execute(upsert_event_query, upsert_inputs)
+        conn.commit()
     except (Exception) as e:
         logger.error(f"Failed to update/insert event: {e}")
     finally:

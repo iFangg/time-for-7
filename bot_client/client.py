@@ -1,9 +1,13 @@
+import os
+import sys
+
 import discord
 import logging
 from discord.ext import commands
 from bot_logging import bot_logger
-from calendarUsers import CalendarUsers
-from calendarEvents import CalendarEvents
+
+from bot_client.calendarUsers import CalendarUsers
+from bot_client.calendarEvents import CalendarEvents
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -19,28 +23,23 @@ class MyClient(commands.Bot):
 
 
 
-def init():
+async def init():
     client = MyClient(command_prefix='!', intents=intents)
     
     ### COMMANDS ###
     @client.command()
-    async def test(ctx):
+    async def test(ctx: commands.Context):
         logger.info("Test called")
         await ctx.send("Test called")
     
-    # add a how to/help section to this command to show people how to import calendars
-    @client.command()
-    async def importCalendar():
-        pass
-
     try:
-        client.add_cog(CalendarEvents(client))
+        await client.add_cog(CalendarEvents(client))
         logger.info("Loaded events cog")
     except Exception as e:
         logger.error("Unable to add events cog: ", e)
     
     try:
-        client.add_cog(CalendarUsers(client))
+        await client.add_cog(CalendarUsers(client))
         logger.info("Loaded users cog")
     except Exception as e:
         logger.error("Unable to add users cog: ", e)

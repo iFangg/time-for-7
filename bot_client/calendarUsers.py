@@ -11,14 +11,15 @@ class CalendarUsers(commands.Cog):
         self.bot = bot
     
     @commands.command()
-    async def users(ctx):
+    async def users(self, ctx: commands.Context):
         logger.info("Get users called")
         users = user_queries.getUsers()
         
         # TODO: Same formatting task as events
         await ctx.send("No users found!" if len(users) == 0 else users)
     
-    async def register(ctx):
+    @commands.command()
+    async def register(self, ctx: commands.Context):
         author = ctx.author
         # print(author)
         user = User(author.name)

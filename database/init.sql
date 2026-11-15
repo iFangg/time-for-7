@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS Events (
     Date NUMERIC NOT NULL,
     isRecurring NUMERIC NOT NULL DEFAULT 0,         -- boolean
     hasDetailsHidden NUMERIC NOT NULL DEFAULT 1,    -- boolean
-    ServerId TEXT NULL
+    serverId TEXT NULL
 );
 
 CREATE TABLE IF NOT EXISTS EventAttendees (

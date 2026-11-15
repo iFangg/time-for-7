@@ -1,4 +1,4 @@
-from user import User
+from classes.user import User
 from datetime import datetime
 
 class Event:
@@ -9,7 +9,8 @@ class Event:
                     attendees: list[User] = [],
                     isRecurring: bool = False,
                     duration: int = 0,
-                    hasDetailsHidden: bool = True
+                    hasDetailsHidden: bool = True,
+                    serverId: int = 0
                 ):
         self.uid = uid
         self.title = title
@@ -18,6 +19,7 @@ class Event:
         self.isRecurring = isRecurring
         self.duration = duration
         self.hasDetailsHidden = hasDetailsHidden
+        self.serverId = serverId
     
     # @property
     # def id(self):

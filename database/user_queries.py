@@ -8,7 +8,7 @@ from database.db_conn import db_connect
 logger = logging.getLogger('discord')
 
 def getUsers():
-    cur = db_connect()
+    [_, cur] = db_connect()
     query = "SELECT * FROM Users"
 
     try:
@@ -27,8 +27,8 @@ def getUsers():
         cur.close()
 
 def registerUser(user: user.User):
-    user.print()
-    cur = db_connect()
+    # user.print()
+    [conn, cur] = db_connect()
     search_query = (
         """
             SELECT * 
@@ -44,7 +44,7 @@ def registerUser(user: user.User):
             INSERT INTO Users 
             (id, Name)
             VALUES
-            ?, ?
+            (?, ?)
         """
     )
     
@@ -59,6 +59,7 @@ def registerUser(user: user.User):
             return "USER ALREADY EXISTS"
 
         res = cur.execute(insert_query, (user._id, user.name))
+        conn.commit()
         
         logger.info(f"User {user._id} - {user.name} inserted into table")
     except (Exception) as e:
