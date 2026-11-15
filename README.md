@@ -13,6 +13,12 @@
 - [sqlite types](https://www.sqlite.org/datatype3.html)
 - [gcal sync](https://github.com/allenporter/gcal_sync) for when we want to try update calendars after making a change on discord
 
+## Packages needed:
+- dotenv
+- discord
+- icalendar
+- icalevents
+
 
 ## Requirements
 - can view shared calendar (optional)
