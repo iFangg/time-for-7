@@ -1,7 +1,6 @@
-import sqlite3
 import logging
 from classes import user
-import database.db_adapters as dba
+import util.definitions as cfg
 from database.db_conn import db_connect
 
 
@@ -56,7 +55,7 @@ def registerUser(user: user.User):
         
         if len(user_exists_fetch) > 0:
             logger.info("User already exsists, registration unsuccessful")
-            return "USER ALREADY EXISTS"
+            return cfg.USER_EXISTS_ERORR
 
         res = cur.execute(insert_query, (user._id, user.name))
         conn.commit()

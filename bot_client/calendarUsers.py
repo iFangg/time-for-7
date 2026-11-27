@@ -1,4 +1,5 @@
 import logging
+import util.definitions as cfg
 from classes.user import User
 from discord.ext import commands
 from database import user_queries
@@ -27,7 +28,10 @@ class CalendarUsers(commands.Cog):
         
         logger.info(f"Register user called by: {user.name}")
         try:
-            user_queries.registerUser(user)
-            await ctx.send(f"<@{author.id}>, you have been registered to this server's schedule!")
+            response = user_queries.registerUser(user)
+            if response == cfg.USER_EXISTS_ERORR:
+                await ctx.send(f"You have already registered, <@{author.id}>. There is no need to use this command again")
+            else:
+                await ctx.send(f"<@{author.id}>, you have been registered to this server's schedule!")
         except (Exception) as e:
             await ctx.send(f"Error registering, try again\nERROR: {e}")

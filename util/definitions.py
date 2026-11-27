@@ -1,0 +1,2 @@
+# Global vars go here
+USER_EXISTS_ERORR = "USER ALREADY EXISTS"
